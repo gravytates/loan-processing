@@ -9,7 +9,7 @@ class App extends Component {
         <FormInputs/>
         <ul>
           {this.props.loanApplications.map(application => (
-            <li key={application.id}>{`Name: ${application.name}`}</li>
+            <li key={application.id}>{`Name: ${application.name}, Decision: ${(application.decision ? "Accepted" : "Declined")}`}</li>
           ))}
         </ul>
       </div>
