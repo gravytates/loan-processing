@@ -12,6 +12,10 @@ class FormInputs extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  postLoanApplication = async () => {
+    return;
+  }
+
   handleSubmit = async event => {
     event.preventDefault();
     this.setState({
