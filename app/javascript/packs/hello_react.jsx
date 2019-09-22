@@ -8,8 +8,10 @@ import PropTypes from 'prop-types'
 import App from '../components/App'
 
 document.addEventListener('DOMContentLoaded', () => {
+  const node = document.getElementById('loan_applications_data');
+  const data = JSON.parse(node.getAttribute('data'));
   ReactDOM.render(
-    <App/>,
+    <App loanApplications={data}/>,
     document.body.appendChild(document.createElement('div')),
   )
 })

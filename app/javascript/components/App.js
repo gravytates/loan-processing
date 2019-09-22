@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
 import FormInputs from './FormInputs';
+import PropTypes from 'prop-types';
 
 class App extends Component {
   render() {
     return(
-      <FormInputs/>
+      <div>
+        <FormInputs/>
+        <ul>
+          {this.props.loanApplications.map(application => (
+            <li key={application.id}>{`Name: ${application.name}`}</li>
+          ))}
+        </ul>
+      </div>
     )
   }
 }
+
+App.propTypes = {
+  loanApplications: PropTypes.array.isRequired
+};
 
 export default App;
