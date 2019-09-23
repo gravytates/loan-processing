@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import FormInputs from './FormInputs';
 import PropTypes from 'prop-types';
+import FormInputs from './FormInputs';
+import Applications from './Applications';
 
 class App extends Component {
   constructor(props) {
@@ -48,20 +49,16 @@ class App extends Component {
   render() {
     return(
       <div>
-        <FormInputs input_name={this.state.name} 
-                    input_address={this.state.address}
-                    input_income={this.state.income}
-                    input_requested_amount={this.state.requestedAmount}
+        <FormInputs inputName={this.state.name} 
+                    inputAddress={this.state.address}
+                    inputIncome={this.state.income}
+                    inputRequestedAmount={this.state.requestedAmount}
                     handleNameChange={this.handleNameChange}
                     handleAddressChange={this.handleAddressChange}
                     handleIncomeChange={this.handleIncomeChange}
                     handleRequestedAmountChange={this.handleRequestedAmountChange}
                     handleSubmit={this.handleSubmit}/>
-        <ul>
-          {this.props.loanApplications.map(application => (
-            <li key={application.id}>{`Name: ${application.name}, Decision: ${(application.decision ? "Accepted" : "Declined")}`}</li>
-          ))}
-        </ul>
+        <Applications loanApplications={this.props.loanApplications}/>
       </div>
     )
   }

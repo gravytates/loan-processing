@@ -9,25 +9,25 @@ const FormInputs = (props) => {
           <label>
             Name:
           </label>
-          <input type="text" value={props.input_name} onChange={props.handleNameChange} />
+          <input type="text" value={props.inputName} onChange={props.handleNameChange} />
         </div>
         <div>
           <label>
             Mailing Address:
           </label>
-          <input type="text" value={props.input_address} onChange={props.handleAddressChange} />
+          <input type="text" value={props.inputAddress} onChange={props.handleAddressChange} />
         </div>
         <div>
           <label>
             Annual Income:
           </label>
-          <input type="number" value={props.input_income} onChange={props.handleIncomeChange} />
+          <input type="number" value={props.inputIncome} onChange={props.handleIncomeChange} />
         </div>
         <div>
           <label>
             Requested Loan Amount:
           </label>
-          <input type="number" value={props.input_requested_amount} onChange={props.handleRequestedAmountChange} />
+          <input type="number" value={props.inputRequestedAmount} onChange={props.handleRequestedAmountChange} />
         </div>
         <input type="submit" value="Submit" />
       </form>
