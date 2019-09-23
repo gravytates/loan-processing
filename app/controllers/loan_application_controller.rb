@@ -21,25 +21,34 @@ class LoanApplicationController < ApplicationController
       end
     end
     
-    # income = params[:income]
-    # amount = params[:requested_amount]
-    # address = params[:address]
+    income = params[:income]
+    amount = params[:requested_amount]
+    address = params[:address]
+    state = LoanRequirements.address_check(address)
+    isStateAcceptable = false
 
-    # if (LoanRequirements.finance_check(income, amount) && LoanRequirements.address_check(address))
-    #   params.push(:decision => true);
-    # end
-    # @loan_application = LoanApplication.new(params)
-    # if @loan_application.save
-    #   render json: LoanApplication.all, status: :created
-    # else
-    #   render json: @loan_application.errors, status: :unprocessable_entity
-    # end
+    if state === "Oregon" || state === "California" || state === "Florida"
+      isStateAcceptable = true
+    end
+
+    if (LoanRequirements.finance_check(income, amount) && isStateAcceptable)
+      params.push(:decision => true);
+    end
+
+    @loan_application = LoanApplication.new(params)
+    
+    if @loan_application.save
+      render json: LoanApplication.all, status: :created
+    else
+      render json: @loan_application.errors, status: :unprocessable_entity
+    end
   end
 
   private 
     def application_params
-      binding.pry
+      # binding.pry
       @cleaned_params = JSON.parse(params.gsub('\"', '"'))
-      JSON.stringify(@cleaned_params).require(:loan_application).permit(:name, :address, :income, :requested_amount)
+      # JSON.stringify(@cleaned_params).require(:loan_application).permit(:name, :address, :income, :requested_amount)
+      params.require(:loan_application).permit(:name, :address, :income, :requested_amount)
     end
 end

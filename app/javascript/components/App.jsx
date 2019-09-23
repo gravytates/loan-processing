@@ -48,14 +48,15 @@ class App extends Component {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-CSRF-Token': scope.token
-      }})
-      .then(function(response) {
-        //do stuff to update view dynamically. applications bound to props here. 
-        //callback function to parent component probs.
-      })
-      .catch(function(response,status,err) {
-        console.log(response, status, err);
-      });
+      }
+    })
+    .then(function(response) {
+      //do stuff to update view dynamically. applications bound to props here. 
+      //callback function to parent component probs.
+    })
+    .catch(function(response,status,err) {
+      console.log(response, status, err);
+    });
 
     alert("A loan application was submitted from: " + scope.state.name);
     
