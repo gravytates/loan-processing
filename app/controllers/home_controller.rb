@@ -9,9 +9,9 @@ class HomeController < ApplicationController
     amount = application_params[:requested_amount]
     address = application_params[:address]
 
-    if (LoanRequirements.finance_check(income, amount) && LoanRequirements.address_check(address)) {
+    if (LoanRequirements.finance_check(income, amount) && LoanRequirements.address_check(address))
       application_params.push(:decision => true);
-    }
+    end
     @loan_application = LoanApplication.new(application_params)
     if @loan_application.save
       render json: @loan_application, status: :created
