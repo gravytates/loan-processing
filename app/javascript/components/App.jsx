@@ -10,13 +10,16 @@ class App extends Component {
       name: '',
       address: '',
       income: 0,
-      requested_amount: 0
+      requested_amount: 0,
+      loan_applications: this.props.loanApplications
     }
-    this.handleSubmit = this.handleSubmit.bind(this);
+
     this.handleAddressChange = this.handleAddressChange.bind(this);
     this.handleIncomeChange = this.handleIncomeChange.bind(this);
     this.handleRequestedAmountChange = this.handleRequestedAmountChange.bind(this);
-    var token = document.getElementsByName('csrf-token')[0].content;
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDecision = this.handleDecision.bind(this);
+    this.token = document.getElementsByName('csrf-token')[0].content;
   }
 
   handleNameChange = (e) => {
@@ -51,8 +54,8 @@ class App extends Component {
       }
     })
     .then(function(response) {
-      //do stuff to update view dynamically. applications bound to props here. 
-      //callback function to parent component probs.
+      this.handleDecision(response.data);
+      this.state.loan_applications.push(response.data) //or something
     })
     .catch(function(response,status,err) {
       console.log(response, status, err);
@@ -67,6 +70,10 @@ class App extends Component {
       requested_amount: 0
     });
   }
+
+  handleDecision = async responseData => {
+    return responseData.decision //or something
+  }
   
   render() {
     return(
@@ -80,7 +87,7 @@ class App extends Component {
                     handleIncomeChange={this.handleIncomeChange}
                     handleRequestedAmountChange={this.handleRequestedAmountChange}
                     handleSubmit={this.handleSubmit}/>
-        <Applications loanApplications={this.props.loanApplications}/>
+        <Applications loanApplications={this.state.loan_applications}/>
       </div>
     )
   }

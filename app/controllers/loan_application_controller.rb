@@ -1,7 +1,7 @@
 require 'pry'
 class LoanApplicationController < ApplicationController
   def index
-    @loan_applications = LoanApplication.all.order(:decision)
+    @loan_applications = LoanApplication.all.order(:decision).reverse
   end
 
   def new
