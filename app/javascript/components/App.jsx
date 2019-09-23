@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FormInputs from './FormInputs';
 import Applications from './Applications';
+import axios from 'axios';
+import { passCsrfToken } from '../util/helpers'
 
 class App extends Component {
   constructor(props) {
@@ -9,7 +11,7 @@ class App extends Component {
     this.state = {
       name: '',
       address: '',
-      income: 0,
+      annual_income: 0,
       requested_amount: 0,
       loan_applications: this.props.loanApplications
     }
@@ -19,7 +21,10 @@ class App extends Component {
     this.handleRequestedAmountChange = this.handleRequestedAmountChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDecision = this.handleDecision.bind(this);
-    this.token = document.getElementsByName('csrf-token')[0].content;
+  }
+
+  componentDidMount() {
+    passCsrfToken(document, axios)
   }
 
   handleNameChange = (e) => {
@@ -31,7 +36,7 @@ class App extends Component {
   }
 
   handleIncomeChange = (e) => {
-    this.setState({ income: e.target.value });
+    this.setState({ annual_income: e.target.value });
   }
 
   handleRequestedAmountChange = (e) => {
@@ -43,16 +48,8 @@ class App extends Component {
     let scope = this;
     let postData = {loan_application: scope.state}
     console.log(postData);
-    fetch("/loan_application", {
-      method: "POST",
-      type: "json",
-      body: postData,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-CSRF-Token': scope.token
-      }
-    })
+    axios
+    .post('/loan_application', postData)
     .then(function(response) {
       this.handleDecision(response.data);
       this.state.loan_applications.push(response.data) //or something
@@ -66,7 +63,7 @@ class App extends Component {
     this.setState({
       name: '',
       address: '',
-      income: 0,
+      anuual_income: 0,
       requested_amount: 0
     });
   }
@@ -80,7 +77,7 @@ class App extends Component {
       <div>
         <FormInputs inputName={this.state.name} 
                     inputAddress={this.state.address}
-                    inputIncome={this.state.income}
+                    inputIncome={this.state.annual_income}
                     inputRequestedAmount={this.state.requested_amount}
                     handleNameChange={this.handleNameChange}
                     handleAddressChange={this.handleAddressChange}

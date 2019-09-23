@@ -9,7 +9,6 @@ class LoanApplicationController < ApplicationController
   end
 
   def create
-    binding.pry
     #check decision using param data before creating new object.    
     income = application_params[:income]
     amount = application_params[:requested_amount]
@@ -21,7 +20,7 @@ class LoanApplicationController < ApplicationController
       isStateAcceptable = true
     end
 
-    if (LoanRequirement.finance_check(income, amount) && isStateAcceptable)
+    if (LoanRequirement.finance_check(income.to_i, amount.to_i) && isStateAcceptable)
       application_params[:decision] = true;
     end
 
