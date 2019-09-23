@@ -6,7 +6,7 @@ ActiveRecord::Base.connection.tables.each do |t|
 end
 single_address = '2625 E Burnside St. Portland, OR 97214'
 single_income = 50000
-single_amount = 60000
+single_amount = 6000
 single_decision = false
 single_state = LoanRequirement.address_check(single_address)
 isStateAcceptable = false
@@ -17,7 +17,7 @@ if (LoanRequirement.finance_check(single_income, single_amount) && isStateAccept
   single_decision = true
 end
 LoanApplication.create(name: 'Grady Shelton', address: single_address, annual_income: 50000, requested_amount: 6000, decision: single_decision)
-100.times do
+30.times do
   name = Faker::Name.name
   address = Faker::Address.full_address
   income = Faker::Number.number(digits: 5)
