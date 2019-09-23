@@ -1,7 +1,7 @@
 require 'pry'
 class LoanApplicationController < ApplicationController
   def index
-    @loan_applications = LoanApplication.all
+    @loan_applications = LoanApplication.all.order(:decision)
   end
 
   def new
@@ -9,21 +9,10 @@ class LoanApplicationController < ApplicationController
   end
 
   def create
-    #check decision using param data before creating new object.
-    @loan_application = LoanApplication.new(application_params)
-
-    respond_to do |format|
-      if @loan_application.save
-        format.html { redirect_to @loan_application, notice: 'Application successfully submitted.'}
-        format.json { render json: LoanApplication.all }
-      else
-        render json: @loan_application.errors, status: :unprocessable_entity
-      end
-    end
-    
-    income = params[:income]
-    amount = params[:requested_amount]
-    address = params[:address]
+    #check decision using param data before creating new object.    
+    income = application_params[:income]
+    amount = application_params[:requested_amount]
+    address = application_params[:address]
     state = LoanRequirements.address_check(address)
     isStateAcceptable = false
 
@@ -31,14 +20,14 @@ class LoanApplicationController < ApplicationController
       isStateAcceptable = true
     end
 
-    if (LoanRequirements.finance_check(income, amount) && isStateAcceptable)
-      params.push(:decision => true);
+    if (LoanRequirements.finance_check(income, amount))
+      application_params.push(:decision => true);
     end
 
-    @loan_application = LoanApplication.new(params)
-    
+    @loan_application = LoanApplication.new(application_params)
+
     if @loan_application.save
-      render json: LoanApplication.all, status: :created
+      render json: LoanApplication.all.order(:decision), status: :created
     else
       render json: @loan_application.errors, status: :unprocessable_entity
     end
@@ -49,6 +38,6 @@ class LoanApplicationController < ApplicationController
       # binding.pry
       @cleaned_params = JSON.parse(params.gsub('\"', '"'))
       # JSON.stringify(@cleaned_params).require(:loan_application).permit(:name, :address, :income, :requested_amount)
-      params.require(:loan_application).permit(:name, :address, :income, :requested_amount)
+      params.require(:loan_application).permit(:name, :address, :income, :requested_amount, :decision)
     end
 end
