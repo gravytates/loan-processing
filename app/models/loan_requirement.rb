@@ -9,7 +9,7 @@ class LoanRequirement < ApplicationRecord
 
   def address_check |address|
     @address = address
-    @key = 'AIzaSyA8xYK27kMESamV4um47l7BOSUtTNyY-x4'
+    @key = ENV["GOOGLE_KEY"]
     response = HTTParty.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + @address + '&key=' + @key)
     return response["results"]["address_components"][4]["long_name"] #returns state from response payload
   end
