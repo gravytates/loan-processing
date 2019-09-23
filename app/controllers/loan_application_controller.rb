@@ -9,6 +9,7 @@ class LoanApplicationController < ApplicationController
   end
 
   def create
+    binding.pry
     #check decision using param data before creating new object.    
     income = application_params[:income]
     amount = application_params[:requested_amount]
@@ -20,8 +21,8 @@ class LoanApplicationController < ApplicationController
       isStateAcceptable = true
     end
 
-    if (LoanRequirements.finance_check(income, amount))
-      application_params.push(:decision => true);
+    if (LoanRequirements.finance_check(income, amount) && isStateAcceptable)
+      application_params[:decision] = true;
     end
 
     @loan_application = LoanApplication.new(application_params)
@@ -35,9 +36,6 @@ class LoanApplicationController < ApplicationController
 
   private 
     def application_params
-      # binding.pry
-      @cleaned_params = JSON.parse(params.gsub('\"', '"'))
-      # JSON.stringify(@cleaned_params).require(:loan_application).permit(:name, :address, :income, :requested_amount)
       params.require(:loan_application).permit(:name, :address, :income, :requested_amount, :decision)
     end
 end
