@@ -14,14 +14,14 @@ class LoanApplicationController < ApplicationController
     income = application_params[:income]
     amount = application_params[:requested_amount]
     address = application_params[:address]
-    state = LoanRequirements.address_check(address)
+    state = LoanRequirement.address_check(address)
     isStateAcceptable = false
 
-    if state === "Oregon" || state === "California" || state === "Florida"
+    if state === "OR" || state === "CA" || state === "FL"
       isStateAcceptable = true
     end
 
-    if (LoanRequirements.finance_check(income, amount) && isStateAcceptable)
+    if (LoanRequirement.finance_check(income, amount) && isStateAcceptable)
       application_params[:decision] = true;
     end
 

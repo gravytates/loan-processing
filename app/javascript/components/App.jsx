@@ -38,8 +38,7 @@ class App extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     let scope = this;
-    // let postData = {loan_application: scope.state}
-    var postData = { name: "Gordy", address: "123", income: 1234, requested_amount: 1234 }
+    let postData = {loan_application: scope.state}
     console.log(postData);
     fetch("/loan_application", {
       method: "POST",
