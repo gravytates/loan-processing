@@ -10,12 +10,13 @@ class App extends Component {
       name: '',
       address: '',
       income: 0,
-      requestedAmount: 0
+      requested_amount: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddressChange = this.handleAddressChange.bind(this);
     this.handleIncomeChange = this.handleIncomeChange.bind(this);
     this.handleRequestedAmountChange = this.handleRequestedAmountChange.bind(this);
+    var token = document.getElementsByName('csrf-token')[0].content;
   }
 
   handleNameChange = (e) => {
@@ -31,18 +32,38 @@ class App extends Component {
   }
 
   handleRequestedAmountChange = (e) => {
-    this.setState({ requestedAmount: e.target.value });
+    this.setState({ requested_amount: e.target.value });
   } 
 
   handleSubmit = async event => {
     event.preventDefault();
-    alert("A loan application was submitted: " + this.state);
-    console.log(this.state);
+    let scope = this;
+    let postData = {loan_application: scope.state}
+    console.log(postData);
+    fetch("/loan_application", {
+      method: "POST",
+      type: "json",
+      body: postData,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-CSRF-Token': scope.token
+      }})
+      .then(function(response) {
+        //do stuff to update view dynamically. applications bound to props here. 
+        //callback function to parent component probs.
+      })
+      .catch(function(response,status,err) {
+        console.log(response, status, err);
+      });
+
+    alert("A loan application was submitted from: " + scope.state.name);
+    
     this.setState({
       name: '',
       address: '',
       income: 0,
-      requestedAmount: 0
+      requested_amount: 0
     });
   }
   
@@ -52,7 +73,7 @@ class App extends Component {
         <FormInputs inputName={this.state.name} 
                     inputAddress={this.state.address}
                     inputIncome={this.state.income}
-                    inputRequestedAmount={this.state.requestedAmount}
+                    inputRequestedAmount={this.state.requested_amount}
                     handleNameChange={this.handleNameChange}
                     handleAddressChange={this.handleAddressChange}
                     handleIncomeChange={this.handleIncomeChange}
